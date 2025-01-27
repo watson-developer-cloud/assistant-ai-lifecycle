@@ -36,23 +36,42 @@ export function postRun(req, res) {
   console.log('postRun', payload);
   console.log('type ', typeof payload);
 
+  /** <streaming enabled> */
   if (payload?.data?.delta && typeof payload.data.delta === 'string') {
     console.log('delta ', payload.data.delta);
-    payload.data.delta += ' translated by post run webhook.\n';
+    payload.data.delta += ' translated by post_run webhook.\n';
     console.log('delta after ', payload.data.delta);
   }
 
-  const wxaOutput = payload?.message?.run?.result?.data?.message?.content ?? [];
-  console.log('wxaOutput', wxaOutput)
+  let wxaOutput = payload?.message?.run?.result?.data?.message?.content ?? [];
+  console.log('wxaOutput', wxaOutput);
   if (wxaOutput.length > 0) {
     console.log('modifying wxa response');
     for (const item of wxaOutput) {
       if (item.text != null) {
-        item.text += ' translated by post run webhook.\n'; 
+        item.text += ' translated by post_run webhook.\n'; 
       }
     }
     console.log('modified resp', wxaOutput)
   }
+  /** <streaming disabled> */
+  if (payload?.content && typeof payload.content === 'string') {
+    payload.content += ' translated by final event, non-stream post_run webhook';
+   }
+ 
+   wxaOutput = payload?.additional_properties?.wxa_message?.output?.generic ?? [];
+   console.log('wxaOutput', wxaOutput);
+   if (wxaOutput.length > 0){
+     console.log('modifying a final event, non-stream wxa response');
+   
+   for (const item of wxaOutput) {
+     if ( item.text != null ) {
+       item.text += ' translated by final event, non-stream post_run webhook';
+     }
+   }
+ 
+   console.log('modified resp by final event, non-stream post_run webhook: ', wxaOutput);
+   }
 
   res.json({payload});
 }
