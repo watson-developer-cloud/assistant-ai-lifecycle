@@ -26,6 +26,7 @@ function App() {
  * then make the main window hidden or visible after the animation as needed.
  */
 function viewChangeHandler(event, instance, stylesInitializedRef) {
+  const customElement = document.querySelector('.WebChatContainer');
   if (!stylesInitializedRef.current) {
     // The first time we get this, set the styles to their initial, default state.
     instance.elements.getMainWindow().addClassName('HideWebChat');
@@ -47,6 +48,8 @@ function viewChangeHandler(event, instance, stylesInitializedRef) {
       // Move the main window to the off-screen position and then un-hide it.
       instance.elements.getMainWindow().addClassName('StartOpenAnimation');
       instance.elements.getMainWindow().removeClassName('HideWebChat');
+      // Make the custom element visible.
+      customElement.classList.remove('WebChatContainer--hidden');
       setTimeout(() => {
         // Give the browser a chance to render the off-screen state and then trigger the open animation.
         instance.elements.getMainWindow().addClassName('OpenAnimation');
@@ -60,7 +63,10 @@ function viewChangeHandler(event, instance, stylesInitializedRef) {
         // After the animation is complete, hide the main window.
         instance.elements.getMainWindow().addClassName('HideWebChat');
         instance.elements.getMainWindow().removeClassName('CloseAnimation');
-      }, 500);
+
+        // Make the custom element hidden.
+        customElement.classList.add('WebChatContainer--hidden');
+      }, 300);
     }
   }
 }

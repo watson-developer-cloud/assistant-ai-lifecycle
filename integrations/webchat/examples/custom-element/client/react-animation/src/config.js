@@ -6,6 +6,9 @@ const config = {
   region: 'us-south',
   serviceInstanceID: '9a3613d2-3ce6-4928-8eb6-4d659d87ae68',
   subscriptionID: null,
+  // You would likely use our own launcher in this scenario.
+  // See https://github.com/watson-developer-cloud/assistant-toolkit/tree/master/integrations/webchat/examples/custom-launcher.
+  // showLauncher: false
 };
 
 export { config };

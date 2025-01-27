@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Custom elements - IBM watsonx Assistant web chat toolkit</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+    .WebChatContainer {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="WebChatContainer"></div>
+
+  <script>
+    const customElement = document.querySelector('.WebChatContainer');
+
+    /**
+     * This is the function that is called when the web chat code has been loaded and it is ready to be rendered.
+     */
+    async function onLoad(instance) {
+      await instance.render();
+    }
+
+    // This is the standard web chat configuration object. You can modify these values with the embed code for your
+    // own assistant if you wish to try this example with your assistant. You can find the documentation for this at
+    // https://web-chat.global.assistant.watson.cloud.ibm.com/docs.html?to=api-configuration#configurationobject.
+    window.watsonAssistantChatOptions = {
+      integrationID: "07b05ae0-7e2e-47d1-a309-d0f5b9915ac5",
+      region: "us-south",
+      serviceInstanceID: "9a3613d2-3ce6-4928-8eb6-4d659d87ae68",
+      // This is where we provide the custom element to web chat so it knows where it is supposed to be placed.
+      element: customElement,
+      // Move to fullscreen layout option.
+      layout: {
+        // Removes dropshadows and borders.
+        showFrame: false,
+        // Sets a max width on the readable content in the chat to make it easier to read.
+        hasContentMaxWidth: true,
+      },
+      // Hide the launcher, we always want this chat open.
+      showLauncher: false,
+      // Auto-open the chat.
+      openChatByDefault: true,
+      // Prevent closing of the chat.
+      hideCloseButton: true,
+      onLoad: onLoad,
+    };
+    setTimeout(function(){const t=document.createElement('script');t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";document.head.appendChild(t);});
+  </script>
+
+</body>
+</html>

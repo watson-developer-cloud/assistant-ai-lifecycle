@@ -18,15 +18,20 @@
 
     .WebChatContainer {
       position: absolute;
-      width: 500px;
+      width: 360px;
       right: 0;
-      top: 16px;
-      bottom: 16px;
+      top: 0;
+      bottom: 0;
+      height: 100vh;
+    }
+
+    .WebChatContainer--hidden {
+      display: none;
     }
 
     #WACContainer.WACContainer .WebChatStyles {
       position: relative;
-      transition: right 500ms ease-in-out;
+      transition: right 300ms ease-in-out;
     }
 
     #WACContainer.WACContainer .HideWebChat {
@@ -35,21 +40,20 @@
 
     #WACContainer.WACContainer .StartOpenAnimation {
       transition: none;
-      right: -500px;
+      right: -360px;
     }
 
     #WACContainer.WACContainer .OpenAnimation {
-      right: 16px;
+      right: 0px;
     }
 
     #WACContainer.WACContainer .CloseAnimation {
-      right: -500px;
+      right: -360px;
     }
   </style>
 </head>
 <body>
-
-  <div class="WebChatContainer"></div>
+  <div class="WebChatContainer WebChatContainer--hidden"></div>
 
   <script>
     const customElement = document.querySelector('.WebChatContainer');
@@ -81,6 +85,8 @@
           // Move the main window to the off-screen position and then un-hide it.
           instance.elements.getMainWindow().addClassName('StartOpenAnimation');
           instance.elements.getMainWindow().removeClassName('HideWebChat');
+          // Make the custom element visible.
+          customElement.classList.remove('WebChatContainer--hidden');
           setTimeout(() => {
             // Give the browser a chance to render the off-screen state and then trigger the open animation.
             instance.elements.getMainWindow().addClassName('OpenAnimation');
@@ -94,7 +100,10 @@
             // After the animation is complete, hide the main window.
             instance.elements.getMainWindow().addClassName('HideWebChat');
             instance.elements.getMainWindow().removeClassName('CloseAnimation');
-          }, 500);
+
+            // Make the custom element hidden.
+            customElement.classList.add('WebChatContainer--hidden');
+          }, 300);
         }
       }
     }
@@ -108,6 +117,7 @@
       // events.
       instance.on({ type: 'view:change', handler: viewChangeHandler });
 
+      // Render the chat.
       await instance.render();
     }
 
@@ -120,7 +130,19 @@
       serviceInstanceID: "9a3613d2-3ce6-4928-8eb6-4d659d87ae68",
       // This is where we provide the custom element to web chat so it knows where it is supposed to be placed.
       element: customElement,
+      headerConfig: {
+        // Have the "close" button be an icon to show that the chat will close to the right.
+        closeButtonIconType: 'side-panel-right'
+      },
+      carbonTheme: {
+        // Add square corners instead of rounded.
+        corners: 'square'
+      },
       onLoad: onLoad,
+
+      // You would likely use our own launcher in this scenario.
+      // See https://github.com/watson-developer-cloud/assistant-toolkit/tree/master/integrations/webchat/examples/custom-launcher.
+      // showLauncher: false
     };
     setTimeout(function(){const t=document.createElement('script');t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";document.head.appendChild(t);});
   </script>

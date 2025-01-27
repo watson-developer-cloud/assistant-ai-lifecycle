@@ -11,15 +11,20 @@ body {
 
 .WebChatContainer {
   position: absolute;
-  width: 500px;
+  width: 360px;
   right: 0;
-  top: 16px;
-  bottom: 16px;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+}
+
+.WebChatContainer--hidden {
+  display: none;
 }
 
 #WACContainer.WACContainer .WebChatStyles {
   position: relative;
-  transition: right 500ms ease-in-out;
+  transition: right 300ms ease-in-out;
 }
 
 #WACContainer.WACContainer .HideWebChat {
@@ -28,13 +33,13 @@ body {
 
 #WACContainer.WACContainer .StartOpenAnimation {
   transition: none;
-  right: -500px;
+  right: -360px;
 }
 
 #WACContainer.WACContainer .OpenAnimation {
-  right: 16px;
+  right: 0px;
 }
 
 #WACContainer.WACContainer .CloseAnimation {
-  right: -500px;
+  right: -360px;
 }
